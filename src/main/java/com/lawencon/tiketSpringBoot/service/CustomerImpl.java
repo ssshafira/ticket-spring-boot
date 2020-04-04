@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.lawencon.tiketSpringBoot.dao.CustomerDao;
-import com.lawencon.tiketSpringBoot.impl.hibernate.CustomRepo;
 import com.lawencon.tiketSpringBoot.model.Customer;
 
 @Service
 @Transactional
-public class CustomerImpl extends CustomRepo implements CustomerService {
+public class CustomerImpl implements CustomerService {
 
 	@Autowired
 	@Qualifier("cust_repo_hibernate") // jika pingin ganti jpa ganti qualifiernya jadi mhs_repo_jpa

@@ -5,18 +5,13 @@ import java.util.List;
 
 import javax.persistence.Query;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.tiketSpringBoot.dao.CustomerDao;
 import com.lawencon.tiketSpringBoot.model.Customer;
-import com.lawencon.tiketSpringBoot.service.CustomerService;
 
 @Repository("cust_repo_hibernate")
 public class CustomerDaoImpl extends CustomRepo implements CustomerDao {
-
-	@Autowired
-	private CustomerService custService;
 
 	@Override
 	public Long cekValid(String uname, String pwd) {
@@ -51,7 +46,7 @@ public class CustomerDaoImpl extends CustomRepo implements CustomerDao {
 	@Override
 	public void insert(Customer cus) throws Exception {
 		List<Customer> listData = new ArrayList<>();
-		listData = custService.findByUsername(cus.getUname());
+		listData = findByUsername(cus.getUname());
 		if (listData.isEmpty()) {
 			Customer cek = new Customer();
 			cek.setUname(cus.getUname());
@@ -64,7 +59,7 @@ public class CustomerDaoImpl extends CustomRepo implements CustomerDao {
 	@Override
 	public void update(Customer cus) throws Exception {
 		List<Customer> listData = new ArrayList<>();
-		listData = custService.findByUsername(cus.getUname());
+		listData = findByUsername(cus.getUname());
 		if (listData.isEmpty()) {
 			Customer cek = new Customer();
 			cek = findById(cus.getCustId());

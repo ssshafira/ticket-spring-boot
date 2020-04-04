@@ -1,16 +1,21 @@
-package com.lawencon.tiketSpringBoot.impl.hibernate;
+package com.lawencon.tiketSpringBoot.impl.jpa;
 
 import java.util.List;
 
-import javax.persistence.Query;
-
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.lawencon.tiketSpringBoot.dao.TicketDao;
 import com.lawencon.tiketSpringBoot.model.Ticket;
 
-@Repository("ticket_repo_hibernate")
-public class TicketDaoImpl extends CustomRepo implements TicketDao {
+@Repository("ticket_repo_jpa")
+public class TicketDaoImpl implements TicketDao {
+
+	@Autowired
+	private TicketRepo ticketRepo;
+	
+	@Autowired
+	private DiscountRepo discountRepo;
 
 	@Override
 	public void insert(Ticket tiket) {
@@ -23,18 +28,14 @@ public class TicketDaoImpl extends CustomRepo implements TicketDao {
 		cek.setTujuan(tiket.getTujuan());
 		cek.setDiskon(tiket.getDiskon());
 		cekDiskon(tiket.getDiskon(), cek);
-		em.persist(cek);
+		ticketRepo.save(cek);
 	}
 
 	@Override
 	public void cekDiskon(String diskon, Ticket tiket) {
 		try {
-			Query q = em.createQuery("select kode from Discount where kode =:kodeParam");
-			q.setParameter("kodeParam", diskon);
-			int pot;
-			Query d = em.createQuery("select potongan from Discount where kode =:kodeParam");
-			d.setParameter("kodeParam", tiket.getDiskon());
-			pot = (int) d.getSingleResult();
+			discountRepo.findKode(diskon);
+			int pot = discountRepo.findPotongan(tiket.getDiskon());
 			tiket.setHarga(getHargaByTipe(tiket) - pot);
 		} catch (Exception e) {
 			tiket.setDiskon("-");
@@ -44,14 +45,11 @@ public class TicketDaoImpl extends CustomRepo implements TicketDao {
 
 	@Override
 	public int getHargaByTipe(Ticket tiket) {
-		Query q = em.createQuery("select harga from Type where typeId =:idParam");
-		q.setParameter("idParam", tiket.getTipe().getTypeId());
-		return (int) q.getSingleResult();
+		return ticketRepo.getHargaByTipe(tiket.getTipe().getTypeId());
 	}
 
 	@Override
 	public String cetakStruk(Ticket tiket) {
-
 		String struk = "=========== TIKET ========== \n "
 				+ " \n No Kursi : " + tiket.getKursi() 
 				+ " \n Asal : " + tiket.getAsal()
@@ -62,25 +60,22 @@ public class TicketDaoImpl extends CustomRepo implements TicketDao {
 		return struk;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<Ticket> findAll() {
-		Query q = em.createQuery("from Ticket");
-		return q.getResultList();
+		return ticketRepo.findAll();
 	}
 
 	@Override
 	public void delete(Ticket tiket) throws Exception {
 		Ticket cek = new Ticket();
 		cek = findById(tiket.getTicketId());
-		em.remove(cek);
-	}
-	
-	@Override
-	public Ticket findById(Long id) throws Exception {
-		Query q = em.createQuery(" from Ticket where ticketId =:idParam");
-		q.setParameter("idParam", id);
-		return (Ticket) q.getSingleResult();
+		ticketRepo.delete(cek);
 	}
 
+	@Override
+	public Ticket findById(Long id) throws Exception {
+		return ticketRepo.findById(id).orElse(null);
+	}
+	
+	
 }
