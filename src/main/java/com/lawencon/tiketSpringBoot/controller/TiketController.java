@@ -84,10 +84,11 @@ public class TiketController extends BaseController {
 	
 	/*** CRUD TIKET ***/
 	@PostMapping("/tiket/insert")
-	public void getWithBody(@RequestBody String content) {
+	public void getWithBody(@RequestBody String content, @RequestHeader("Authorization") String uname) {
 		try {
+			String[] auth = super.authUser(uname);
 			List<Ticket> m = Arrays.asList(new ObjectMapper().readValue(content, Ticket[].class));
-			m.forEach(tiket -> ticketService.insert(tiket));
+			m.forEach(tiket -> ticketService.insert(tiket,auth[0],auth[1]));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -4,5 +4,5 @@ import com.lawencon.tiketSpringBoot.model.Ticket;
 
 public interface TicketService {
 
-	abstract void insert(Ticket tiket);
+	abstract void insert(Ticket tiket, String auth, String auth2);
 }
