@@ -57,7 +57,7 @@ public class TransactionDaoImpl implements TransactionDao {
 		Transaction cek = new Transaction();
 		cek = findById(trx.getTransaction().getTransId());
 		cek.setTotal(ticketRepo.getTotalHarga(trx.getTransaction().getTransId()));
-		trxRepo.save(trx.getTransaction());
+		trxRepo.save(cek);
 	}
 	
 	@Override
