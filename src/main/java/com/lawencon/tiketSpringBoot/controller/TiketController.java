@@ -223,7 +223,7 @@ public class TiketController extends BaseController {
 		}
 	}
 
-	@DeleteMapping("/ticket/delete")
+	@DeleteMapping("/transaction/delete")
 	public ResponseEntity<List<Ticket>> deleteTrx(@RequestBody Transaction trx,
 			@RequestHeader("Authorization") String uname) {
 		try {
@@ -237,7 +237,7 @@ public class TiketController extends BaseController {
 	}
 
 	/*** CRUD TIKET ***/
-	@GetMapping("/tiket")
+	@GetMapping("/ticket")
 	public ResponseEntity<List<Ticket>> getAllTicket(@RequestHeader("Authorization") String uname) {
 		List<Ticket> listData = new ArrayList<>();
 		try {
@@ -249,14 +249,13 @@ public class TiketController extends BaseController {
 		}
 	}
 
-	@PostMapping("/tiket/insert")
+	@PostMapping("/ticket/insert")
 	public ResponseEntity<?> getWithBody(@RequestBody String content, @RequestHeader("Authorization") String uname) {
 		try {
 			String[] auth = super.authUser(uname);
 			List<Ticket> m = Arrays.asList(new ObjectMapper().readValue(content, Ticket[].class));
 			m.forEach(tiket -> {
 				ticketService.insert(tiket, auth[0], auth[1]);
-				ticketService.cetakStruk(tiket);
 			});
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {

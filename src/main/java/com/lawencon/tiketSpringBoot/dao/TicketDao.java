@@ -12,6 +12,5 @@ public interface TicketDao {
 	
 	abstract void cekDiskon(String diskon, Ticket tiket);
 	abstract int getHargaByTipe(Ticket tiket);
-	abstract String cetakStruk(Ticket tiket);
 	abstract Ticket findById(Long id) throws Exception;
 }

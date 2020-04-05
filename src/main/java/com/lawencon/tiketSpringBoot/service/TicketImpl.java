@@ -33,11 +33,6 @@ public class TicketImpl implements TicketService {
 	}
 
 	@Override
-	public ResponseEntity<?> cetakStruk(Ticket tiket) {
-		return new ResponseEntity<>(ticketDao.cetakStruk(tiket), HttpStatus.OK);
-	}
-
-	@Override
 	public List<Ticket> findAll(String string, String string2) {
 		return ticketDao.findAll();
 	}

@@ -49,18 +49,6 @@ public class TicketDaoImpl implements TicketDao {
 	}
 
 	@Override
-	public String cetakStruk(Ticket tiket) {
-		String struk = "=========== TIKET ========== \n "
-				+ " \n No Kursi : " + tiket.getKursi() 
-				+ " \n Asal : " + tiket.getAsal()
-				+ " \n Tujuan : " + tiket.getTujuan() 
-				+ " \n Tanggal : " + tiket.getBerangkat()
-				+ " \n Kode Promo : " + tiket.getDiskon()
-				+ " \n Harga Akhir : " + tiket.getHarga();
-		return struk;
-	}
-
-	@Override
 	public List<Ticket> findAll() {
 		return ticketRepo.findAll();
 	}
