@@ -13,40 +13,6 @@ public class TicketDaoImpl implements TicketDao {
 
 	@Autowired
 	private TicketRepo ticketRepo;
-	
-	@Autowired
-	private DiscountRepo discountRepo;
-
-	@Override
-	public void insert(Ticket tiket) {
-		Ticket cek = new Ticket();
-		cek.setTransaction(tiket.getTransaction());
-		cek.setAsal(tiket.getAsal());
-		cek.setBerangkat(tiket.getBerangkat());
-		cek.setKursi(tiket.getKursi());
-		cek.setTipe(tiket.getTipe());
-		cek.setTujuan(tiket.getTujuan());
-		cek.setDiskon(tiket.getDiskon());
-		cekDiskon(tiket.getDiskon(), cek);
-		ticketRepo.save(cek);
-	}
-
-	@Override
-	public void cekDiskon(String diskon, Ticket tiket) {
-		try {
-			discountRepo.findKode(diskon);
-			int pot = discountRepo.findPotongan(tiket.getDiskon());
-			tiket.setHarga(getHargaByTipe(tiket) - pot);
-		} catch (Exception e) {
-			tiket.setDiskon("-");
-			tiket.setHarga(getHargaByTipe(tiket));
-		}
-	}
-
-	@Override
-	public int getHargaByTipe(Ticket tiket) {
-		return ticketRepo.getHargaByTipe(tiket.getTipe().getTypeId());
-	}
 
 	@Override
 	public List<Ticket> findAll() {

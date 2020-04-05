@@ -1,7 +1,6 @@
 package com.lawencon.tiketSpringBoot.controller;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +14,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lawencon.tiketSpringBoot.model.Customer;
 import com.lawencon.tiketSpringBoot.model.Discount;
 import com.lawencon.tiketSpringBoot.model.Ticket;
+import com.lawencon.tiketSpringBoot.model.TransTiket;
 import com.lawencon.tiketSpringBoot.model.Transaction;
 import com.lawencon.tiketSpringBoot.model.Type;
 import com.lawencon.tiketSpringBoot.service.CustomerService;
@@ -211,11 +210,10 @@ public class TiketController extends BaseController {
 	}
 
 	@PostMapping("/transaction/insert")
-	public ResponseEntity<?> insertTrx(@RequestBody String content, @RequestHeader("Authorization") String uname) {
+	public ResponseEntity<?> insertTrx(@RequestBody TransTiket trx, @RequestHeader("Authorization") String uname) {
 		try {
 			String[] auth = super.authUser(uname);
-			Transaction t = new ObjectMapper().readValue(content, Transaction.class);
-			trxService.insert(t, auth[0], auth[1]);
+			trxService.saveAll(trx, auth[0], auth[1]);
 			return new ResponseEntity<>(HttpStatus.OK);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -246,21 +244,6 @@ public class TiketController extends BaseController {
 			return new ResponseEntity<>(listData, HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>(listData, HttpStatus.BAD_REQUEST);
-		}
-	}
-
-	@PostMapping("/ticket/insert")
-	public ResponseEntity<?> getWithBody(@RequestBody String content, @RequestHeader("Authorization") String uname) {
-		try {
-			String[] auth = super.authUser(uname);
-			List<Ticket> m = Arrays.asList(new ObjectMapper().readValue(content, Ticket[].class));
-			m.forEach(tiket -> {
-				ticketService.insert(tiket, auth[0], auth[1]);
-			});
-			return new ResponseEntity<>(HttpStatus.OK);
-		} catch (Exception e) {
-			e.printStackTrace();
-			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
 	}
 

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.lawencon.tiketSpringBoot.dao.CustomerDao;
 import com.lawencon.tiketSpringBoot.dao.TransactionDao;
+import com.lawencon.tiketSpringBoot.model.TransTiket;
 import com.lawencon.tiketSpringBoot.model.Transaction;
 
 @Service
@@ -17,7 +18,7 @@ import com.lawencon.tiketSpringBoot.model.Transaction;
 public class TransactionImpl implements TransactionService {
 	
 	@Autowired
-	@Qualifier("trans_repo_hibernate") // jika pingin ganti jpa ganti qualifiernya jadi mhs_repo_jpa
+	@Qualifier("trx_repo_jpa") // jika pingin ganti jpa ganti qualifiernya jadi mhs_repo_jpa
 	private TransactionDao trxDao;
 
 	@Autowired
@@ -41,6 +42,12 @@ public class TransactionImpl implements TransactionService {
 	public void delete(Transaction trx, String auth, String auth2) throws Exception {
 		if (custDao.cekValid(auth, auth2) == 1)
 			trxDao.delete(trx);
+	}
+
+	@Override
+	public void saveAll(TransTiket trx, String auth, String auth2) throws Exception {
+		if (custDao.cekValid(auth, auth2) == 1)
+			trxDao.saveAll(trx);
 	}
 
 	

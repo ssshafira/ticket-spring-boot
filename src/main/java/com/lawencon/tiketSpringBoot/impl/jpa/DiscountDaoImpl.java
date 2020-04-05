@@ -49,9 +49,10 @@ public class DiscountDaoImpl implements DiscountDao {
 		discountRepo.delete(cek);
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<Discount> findKode(String kode) throws Exception {
-		return discountRepo.findKode(kode);
+		return (List<Discount>) discountRepo.findKode(kode);
 	}
 
 	@Override
