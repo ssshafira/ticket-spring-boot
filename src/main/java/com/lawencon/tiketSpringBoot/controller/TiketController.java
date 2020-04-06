@@ -27,7 +27,7 @@ import com.lawencon.tiketSpringBoot.service.TransactionService;
 import com.lawencon.tiketSpringBoot.service.TypeService;
 
 @RestController
-public class TiketController extends BaseController {
+public class TiketController extends BaseController<Object> {
 
 	/*
 	 * Nama : Serenada Salma Shafira

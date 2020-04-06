@@ -2,7 +2,11 @@ package com.lawencon.tiketSpringBoot.controller;
 
 import java.util.Base64;
 
-public class BaseController {
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+public class BaseController<T> {
+	
+	T model;
 
 	public String[] authUser(String auth) {
 		byte[] decodedBytes = Base64.getDecoder().decode(auth);
@@ -10,4 +14,9 @@ public class BaseController {
 		String[] authArr = decodedString.split(":");
 		return authArr;
 	}
+	
+	public T readValue(String content, Class<T> kelas) throws Exception {
+		return new ObjectMapper().readValue(content, kelas);
+	}
+
 }

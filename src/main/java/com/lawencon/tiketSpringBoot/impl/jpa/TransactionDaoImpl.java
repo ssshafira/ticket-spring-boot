@@ -40,6 +40,11 @@ public class TransactionDaoImpl implements TransactionDao {
 		trxRepo.save(cek);
 	}
 
+	//kenapa pakai bean? supaya loose coupling, jd ketika diinjek ke objek, objeknya tdk perlu dicreate d dlm kelas itu
+	//singleton: objek dibuat sekali dan bisa dipakai bareng2, contoh: bola yg sama bisa dipake sama siapapun ngga perlu new Bola di tiap kelas
+	//objek pertama kali dibuat di main (SpringBootAplication) saat servernya jalan
+	
+	
 	@Override
 	public void delete(Transaction transaction) throws Exception {
 		Transaction cek = new Transaction();
